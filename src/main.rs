@@ -1,33 +1,21 @@
+mod actix;
 mod db;
 mod handlers;
 mod models;
+mod warp;
 
-use db::init_db;
-use handlers::{retrieve_data, store_data};
-use warp::Filter;
+use std::env;
 
 #[tokio::main]
 async fn main() {
-    let db = init_db().await;
+    // Use an environment variable to select the server
+    let server_type = env::var("SERVER_TYPE").unwrap_or_else(|_| "actix".to_string());
 
-    let store_route = warp::post()
-        .and(warp::path("store"))
-        .and(warp::body::json())
-        .and(with_db(db.clone()))
-        .and_then(store_data);
-
-    let retrieve_route = warp::get()
-        .and(warp::path("retrieve"))
-        .and(with_db(db.clone()))
-        .and_then(retrieve_data);
-
-    let routes = store_route.or(retrieve_route);
-
-    warp::serve(routes).run(([127, 0, 0, 1], 3030)).await;
-}
-
-fn with_db(
-    db: db::Db,
-) -> impl Filter<Extract = (db::Db,), Error = std::convert::Infallible> + Clone {
-    warp::any().map(move || db.clone())
+    match server_type.as_str() {
+        "warp" => warp::run_warp_server().await,
+        "actix" => {
+            actix::run_actix_server().await.unwrap();
+        }
+        _ => eprintln!("Unknown server type. Use 'warp' or 'actix'."),
+    }
 }

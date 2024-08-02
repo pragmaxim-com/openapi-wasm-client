@@ -10,6 +10,7 @@ rocksdb = { git = "https://github.com/rust-rocksdb/rust-rocksdb", default-featur
     "multi-threaded-cf",
 ], rev = "6943a2d06064780a26c6ec581c3182bc8e2f6a5a" }
 warp = "0.3.7"
+actix-web = "4.8.0"
 serde = { version = "1.0.204", features = ["derive"] }
 serde_json = "1.0.122"
 tokio = { version = "1.39.2", features = ["full"] }
