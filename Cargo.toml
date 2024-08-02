@@ -11,6 +11,10 @@ rocksdb = { git = "https://github.com/rust-rocksdb/rust-rocksdb", default-featur
 ], rev = "6943a2d06064780a26c6ec581c3182bc8e2f6a5a" }
 warp = "0.3.7"
 actix-web = "4.8.0"
+hyper = "1.4.1"
+hyper-util = { version = "0.1.6", features = ["full"] }
+http-body-util = "0.1.2"
+bytes = "1.7.1"
 serde = { version = "1.0.204", features = ["derive"] }
 serde_json = "1.0.122"
 tokio = { version = "1.39.2", features = ["full"] }
