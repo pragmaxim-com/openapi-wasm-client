@@ -689,17 +689,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d231b230927b5e4ad203db57bbcbee2802f6bce620b1e4a9024a07d94e2907ec"
 
 [[package]]
-name = "playground"
-version = "0.1.0"
-dependencies = [
- "rocksdb",
- "serde",
- "serde_json",
- "tokio",
- "warp",
-]
-
-[[package]]
 name = "ppv-lite86"
 version = "0.2.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -801,6 +790,17 @@ source = "git+https://github.com/rust-rocksdb/rust-rocksdb?rev=6943a2d06064780a2
 dependencies = [
  "libc",
  "librocksdb-sys",
+]
+
+[[package]]
+name = "rust-playground"
+version = "0.1.0"
+dependencies = [
+ "rocksdb",
+ "serde",
+ "serde_json",
+ "tokio",
+ "warp",
 ]
 
 [[package]]
