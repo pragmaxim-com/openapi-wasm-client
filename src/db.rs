@@ -1,4 +1,6 @@
-use rocksdb::{MultiThreaded, OptimisticTransactionDB, Options};
+use rocksdb::{
+    MultiThreaded, OptimisticTransactionDB, OptimisticTransactionOptions, Options, WriteOptions,
+};
 use std::sync::{Arc, RwLock};
 
 use crate::models::Data;
@@ -27,7 +29,11 @@ pub async fn init_db() -> Db {
 
 pub async fn insert_data(db: Db, data: Data) -> Result<(), Box<dyn std::error::Error>> {
     let db = db.write().unwrap();
-    let txn: rocksdb::Transaction<OptimisticTransactionDB<MultiThreaded>> = db.transaction();
+    let mut write_options = WriteOptions::default();
+    write_options.disable_wal(true);
+
+    let txn: rocksdb::Transaction<OptimisticTransactionDB<MultiThreaded>> =
+        db.transaction_opt(&write_options, &OptimisticTransactionOptions::default());
     txn.put_cf(
         &db.cf_handle("field1").unwrap(),
         b"field1_key",
@@ -39,6 +45,7 @@ pub async fn insert_data(db: Db, data: Data) -> Result<(), Box<dyn std::error::E
         data.field2.as_bytes(),
     )?;
     txn.commit()?;
+    db.flush()?; // repro of broken flushing, no SST file created
 
     Ok(())
 }
