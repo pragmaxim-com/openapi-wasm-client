@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8080",
+      "url": "http://naked:8082",
       "description": "Local server"
     }
   ],

@@ -46,20 +46,17 @@ pub async fn run_actix_server() -> std::io::Result<()> {
                     .max_age(3600),
             )
             .app_data(web::Data::new(db.clone()))
-            .service(fs::Files::new("/openapi.json", "./").index_file("openapi.json"))
-            .service(fs::Files::new("/", "./swagger-ui").index_file("index.html"))
-            .service(
-                web::resource("/blocks")
-                    .route(web::get().to(retrieve_blocks))
-                    .route(web::post().to(store_block)),
+            .route(
+                "/openapi.json",
+                web::get().to(|| async { fs::NamedFile::open("./openapi.json") }),
             )
-            .service(
-                web::resource("/addresses")
-                    .route(web::get().to(retrieve_addresses))
-                    .route(web::post().to(store_address)),
-            )
+            .service(fs::Files::new("/swagger", "./swagger-ui").index_file("index.html"))
+            .route("/blocks", web::get().to(retrieve_blocks))
+            .route("/addresses", web::get().to(retrieve_addresses))
+            .route("/blocks", web::post().to(store_block))
+            .route("/addresses", web::post().to(store_address))
     })
-    .bind("127.0.0.1:8080")?
+    .bind("0.0.0.0:8082")?
     .run()
     .await
 }
