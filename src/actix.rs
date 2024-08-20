@@ -41,7 +41,7 @@ pub async fn run_actix_server() -> std::io::Result<()> {
             .wrap(
                 Cors::default()
                     .allowed_origin("http://127.0.0.1:8080") // Allow requests from this origin
-                    .allowed_methods(vec!["GET"])
+                    .allowed_methods(vec!["GET", "POST"])
                     .allowed_headers(vec!["Content-Type", "Authorization"])
                     .max_age(3600),
             )
