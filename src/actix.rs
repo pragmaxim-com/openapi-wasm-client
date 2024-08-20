@@ -38,6 +38,7 @@ pub async fn run_actix_server() -> std::io::Result<()> {
     HttpServer::new(move || {
         App::new()
             .service(fs::Files::new("/api-docs", "./").index_file("openapi.yaml"))
+            .service(fs::Files::new("/", "./swagger-ui").index_file("index.html"))
             .app_data(web::Data::new(db.clone()))
             .route("/blocks", web::get().to(retrieve_blocks))
             .route("/addresses", web::get().to(retrieve_addresses))
