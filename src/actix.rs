@@ -42,16 +42,22 @@ pub async fn run_actix_server() -> std::io::Result<()> {
                 Cors::default()
                     .allow_any_origin()
                     .allow_any_header()
-                    .allowed_methods(["GET", "POST"])
+                    .allow_any_method()
                     .max_age(3600),
             )
+            .app_data(web::Data::new(db.clone()))
             .service(fs::Files::new("/openapi.json", "./").index_file("openapi.json"))
             .service(fs::Files::new("/", "./swagger-ui").index_file("index.html"))
-            .app_data(web::Data::new(db.clone()))
-            .route("/blocks", web::get().to(retrieve_blocks))
-            .route("/addresses", web::get().to(retrieve_addresses))
-            .route("/blocks", web::post().to(store_block))
-            .route("/addresses", web::post().to(store_address))
+            .service(
+                web::resource("/blocks")
+                    .route(web::get().to(retrieve_blocks))
+                    .route(web::post().to(store_block)),
+            )
+            .service(
+                web::resource("/addresses")
+                    .route(web::get().to(retrieve_addresses))
+                    .route(web::post().to(store_address)),
+            )
     })
     .bind("127.0.0.1:8080")?
     .run()
