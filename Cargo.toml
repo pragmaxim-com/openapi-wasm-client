@@ -11,6 +11,7 @@ rocksdb = { git = "https://github.com/rust-rocksdb/rust-rocksdb", default-featur
 ], rev = "6943a2d06064780a26c6ec581c3182bc8e2f6a5a" }
 warp = "0.3.7"
 actix-web = "4.8.0"
+actix-files = "0.6.6"
 hyper = "1.4.1"
 hyper-util = { version = "0.1.6", features = ["full"] }
 http-body-util = "0.1.2"

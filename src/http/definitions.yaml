@@ -1,0 +1,10 @@
+# src/http/definitions.yaml
+openapi: 3.0.0
+info:
+  title: Rust Playground API
+  version: 1.0.0
+paths:
+  /blocks:
+    $ref: './paths/blocks.yaml#/paths/~1blocks'
+  /addresses:
+    $ref: './paths/addresses.yaml#/paths/~1addresses'

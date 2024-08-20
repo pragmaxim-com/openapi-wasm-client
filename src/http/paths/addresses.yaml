@@ -1,0 +1,47 @@
+# src/http/paths/addresses.yaml
+openapi: 3.0.0
+info:
+  title: Addresses API
+  version: 1.0.0
+paths:
+  /addresses:
+    get:
+      summary: Get addresses
+      description: Retrieve a list of addresses
+      responses:
+        '200':
+          description: A list of addresses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    address:
+                      type: string
+                      example: "addr1q9w7j8c9g8c9g7j8w7j8c9g8c9g7j8c9g8c9g8c9g8c9g8c9g8c9g8c9g8c9g8"
+                    balance:
+                      type: integer
+                      example: 1000000
+    post:
+        summary: Store an address
+        description: Store a new address in the system
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  address:
+                    type: string
+                    description: The unique identifier for the address
+                    example: addr1q9w7j8c9g8c9g7j8w7j8c9g8c9g7j8c9g8c9g8c9g8c9g8c9g8c9g8c9g8c9g8
+                  balance:
+                    type: integer
+                    description: The balance associated with the address
+                    example: 1000000
+        responses:
+          '201':
+            description: Address stored successfully

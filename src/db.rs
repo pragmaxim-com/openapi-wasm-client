@@ -3,9 +3,15 @@ use rocksdb::{
 };
 use std::sync::{Arc, RwLock};
 
-use crate::models::Data;
+use crate::models::{Address, Block};
 
 pub type Db = Arc<RwLock<OptimisticTransactionDB<MultiThreaded>>>;
+
+fn box_to_array(boxed: Box<[u8]>) -> [u8; 8] {
+    // SAFETY: The caller must guarantee that `boxed` has exactly 8 elements.
+    let ptr = Box::into_raw(boxed) as *mut [u8; 8];
+    unsafe { *Box::from_raw(ptr) }
+}
 
 pub async fn init_db() -> Db {
     let mut cf_opts = Options::default();
@@ -19,7 +25,7 @@ pub async fn init_db() -> Db {
             .unwrap();
 
     if existing_cfs.is_empty() {
-        for cf in vec!["field1", "field2"].into_iter() {
+        for cf in vec!["addresses", "blocks"].into_iter() {
             db.create_cf(cf, &cf_opts).unwrap();
         }
     }
@@ -27,7 +33,7 @@ pub async fn init_db() -> Db {
     Arc::new(RwLock::new(db))
 }
 
-pub async fn insert_data(db: Db, data: Data) -> Result<(), Box<dyn std::error::Error>> {
+pub async fn insert_address(db: Db, address: Address) -> Result<(), Box<dyn std::error::Error>> {
     let db = db.write().unwrap();
     let mut write_options = WriteOptions::default();
     write_options.disable_wal(true);
@@ -35,14 +41,9 @@ pub async fn insert_data(db: Db, data: Data) -> Result<(), Box<dyn std::error::E
     let txn: rocksdb::Transaction<OptimisticTransactionDB<MultiThreaded>> =
         db.transaction_opt(&write_options, &OptimisticTransactionOptions::default());
     txn.put_cf(
-        &db.cf_handle("field1").unwrap(),
-        b"field1_key",
-        data.field1.as_bytes(),
-    )?;
-    txn.put_cf(
-        &db.cf_handle("field2").unwrap(),
-        b"field2_key",
-        data.field2.as_bytes(),
+        &db.cf_handle("addresses").unwrap(),
+        address.address.as_bytes(),
+        u64::to_be_bytes(address.balance),
     )?;
     txn.commit()?;
     db.flush()?; // repro of broken flushing, no SST file created
@@ -50,17 +51,47 @@ pub async fn insert_data(db: Db, data: Data) -> Result<(), Box<dyn std::error::E
     Ok(())
 }
 
-pub async fn get_data(db: Db) -> Result<Data, Box<dyn std::error::Error>> {
-    let db = db.read().unwrap();
-    let field1 = db
-        .get_cf(&db.cf_handle("field1").unwrap(), b"field1_key")?
-        .unwrap();
-    let field2 = db
-        .get_cf(&db.cf_handle("field2").unwrap(), b"field2_key")?
-        .unwrap();
+pub async fn insert_block(db: Db, block: Block) -> Result<(), Box<dyn std::error::Error>> {
+    let db = db.write().unwrap();
+    let mut write_options = WriteOptions::default();
+    write_options.disable_wal(true);
 
-    Ok(Data {
-        field1: String::from_utf8(field1.to_vec())?,
-        field2: String::from_utf8(field2.to_vec())?,
-    })
+    let txn: rocksdb::Transaction<OptimisticTransactionDB<MultiThreaded>> =
+        db.transaction_opt(&write_options, &OptimisticTransactionOptions::default());
+    txn.put_cf(
+        &db.cf_handle("blocks").unwrap(),
+        block.block_id.as_bytes(),
+        u64::to_be_bytes(block.height),
+    )?;
+    txn.commit()?;
+    db.flush()?; // repro of broken flushing, no SST file created
+    Ok(())
+}
+
+pub async fn get_addresses(db: Db) -> Vec<Address> {
+    let db = db.read().unwrap();
+    let cf_handle = db.cf_handle("addresses").unwrap();
+    db.iterator_cf(&cf_handle, rocksdb::IteratorMode::Start)
+        .map(|result| match result {
+            Ok((address, balance)) => Address {
+                address: String::from_utf8(address.to_vec()).unwrap(),
+                balance: u64::from_be_bytes(box_to_array(balance)),
+            },
+            Err(err) => panic!("Error {}", err.to_string()),
+        })
+        .collect()
+}
+
+pub async fn get_blocks(db: Db) -> Vec<Block> {
+    let db = db.read().unwrap();
+    let cf_handle = db.cf_handle("blocks").unwrap();
+    db.iterator_cf(&cf_handle, rocksdb::IteratorMode::Start)
+        .map(|result| match result {
+            Ok((block_id, height)) => Block {
+                block_id: String::from_utf8(block_id.to_vec()).unwrap(),
+                height: u64::from_be_bytes(box_to_array(height)),
+            },
+            Err(err) => panic!("Error {}", err.to_string()),
+        })
+        .collect()
 }

@@ -1,18 +1,32 @@
-### Rust playground
+## Rust playground
 
-[rust-rocksdb](https://github.com/rust-rocksdb/rust-rocksdb) leverages rustc to prevent us from misusing rocksdb,
-however sometimes it is very tricky to achieve what we need, for instance complex column family management.
+Fooling around, reproducing, spiking, experimenting, etc.
 
-Rust lifetimes are often hacked in a way that we can spent half a day with trying to compile code base after refactoring.
+### Usage
 
 ```
 cargo run
 ```
 
 ```
-curl -X POST http://127.0.0.1:3032/store -H "Content-Type: application/json" -d '{"field1":"frog", "field2":"croco"}'
+curl -X POST http://127.0.0.1:3032/blocks -H "Content-Type: application/json" -d '{"block_id":"frog", "height":1}'
+curl -X POST http://127.0.0.1:3032/addresses -H "Content-Type: application/json" -d '{"address":"croco", "balance":2}'
 ```
 
 ```
-curl http://127.0.0.1:3032/retrieve
+curl http://127.0.0.1:3032/blocks
+curl http://127.0.0.1:3032/addresses
+```
+
+```
+http://127.0.0.1:3032/api-docs
+```
+
+### Building OpenAPI
+
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
+nvm install 20
+npm install --global yarn
+npm install --global @redocly/cli@latest
 ```
