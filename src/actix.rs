@@ -42,7 +42,7 @@ pub async fn run_actix_server() -> std::io::Result<()> {
                 Cors::default()
                     .allow_any_origin()
                     .allow_any_header()
-                    .allow_any_method()
+                    .allowed_methods(["GET", "POST"])
                     .max_age(3600),
             )
             .service(fs::Files::new("/openapi.json", "./").index_file("openapi.json"))
