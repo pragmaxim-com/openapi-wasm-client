@@ -18,8 +18,6 @@ curl http://127.0.0.1:8082/blocks
 curl http://127.0.0.1:8082/addresses
 ```
 
-http://127.0.0.1:8082/swagger
-
 ### Building OpenAPI
 
 ```
@@ -27,4 +25,8 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
 nvm install 20
 npm install --global yarn
 npm install --global @redocly/cli@latest
+
+yarn bundle
 ```
+
+http://127.0.0.1:8082/swagger
