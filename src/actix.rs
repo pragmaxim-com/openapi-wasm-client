@@ -40,9 +40,9 @@ pub async fn run_actix_server() -> std::io::Result<()> {
         App::new()
             .wrap(
                 Cors::default()
-                    .allowed_origin("http://127.0.0.1:8080") // Allow requests from this origin
-                    .allowed_methods(vec!["GET", "POST"])
-                    .allowed_headers(vec!["Content-Type", "Authorization"])
+                    .allow_any_origin()
+                    .allow_any_header()
+                    .allow_any_method()
                     .max_age(3600),
             )
             .service(fs::Files::new("/openapi.json", "./").index_file("openapi.json"))
