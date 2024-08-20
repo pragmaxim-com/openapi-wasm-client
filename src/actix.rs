@@ -45,7 +45,7 @@ pub async fn run_actix_server() -> std::io::Result<()> {
             .route("/blocks", web::post().to(store_block))
             .route("/addresses", web::post().to(store_address))
     })
-    .bind("127.0.0.1:3032")?
+    .bind("127.0.0.1:8080")?
     .run()
     .await
 }

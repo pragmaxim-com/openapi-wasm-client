@@ -2,52 +2,20 @@ openapi: 3.0.0
 info:
   title: Rust Playground API
   version: 1.0.0
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+  - url: http://localhost:8080
+    description: Local server
 paths:
-  /blocks:
-    get:
-      summary: Get blocks
-      description: Retrieve a list of blocks
-      responses:
-        '200':
-          description: A list of blocks
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    block_id:
-                      type: string
-                      example: 00000000000000000008c14f2c8fbc000d4d1efb1a1c4f7e13e7d233e4513f9b
-                    height:
-                      type: integer
-                      example: 654321
-    post:
-      summary: Store a block
-      description: Store a new block in the system
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                block_id:
-                  type: string
-                  description: The unique identifier for the block
-                  example: 00000000000000000008c14f2c8fbc000d4d1efb1a1c4f7e13e7d233e4513f9b
-                height:
-                  type: integer
-                  description: The height of the block in the blockchain
-                  example: 654321
-      responses:
-        '201':
-          description: Block stored successfully
   /addresses:
     get:
       summary: Get addresses
       description: Retrieve a list of addresses
+      operationId: getAddresses
+      security:
+        - ApiKeyAuth: []
       responses:
         '200':
           description: A list of addresses
@@ -64,9 +32,14 @@ paths:
                     balance:
                       type: integer
                       example: 1000000
+        '400':
+          description: Invalid request
     post:
       summary: Store an address
       description: Store a new address in the system
+      operationId: storeAddress
+      security:
+        - ApiKeyAuth: []
       requestBody:
         required: true
         content:
@@ -85,4 +58,57 @@ paths:
       responses:
         '201':
           description: Address stored successfully
+        '400':
+          description: Invalid request
+  /blocks:
+    get:
+      summary: Get blocks
+      description: Retrieve a list of blocks
+      operationId: getBlocks
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: A list of blocks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    block_id:
+                      type: string
+                      example: 00000000000000000008c14f2c8fbc000d4d1efb1a1c4f7e13e7d233e4513f9b
+                    height:
+                      type: integer
+                      example: 654321
+        '400':
+          description: Invalid request
+    post:
+      summary: Store a block
+      description: Store a new block in the system
+      operationId: storeBlock
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                block_id:
+                  type: string
+                  description: The unique identifier for the block
+                  example: 00000000000000000008c14f2c8fbc000d4d1efb1a1c4f7e13e7d233e4513f9b
+                height:
+                  type: integer
+                  description: The height of the block in the blockchain
+                  example: 654321
+      responses:
+        '201':
+          description: Block stored successfully
+        '400':
+          description: Invalid request
 components: {}

@@ -49,7 +49,7 @@ async fn handle_request(
 
 pub async fn run_hyper_server() {
     let db = init_db().await;
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3032));
+    let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
     let listener = TcpListener::bind(addr)
         .await
         .expect("Failed to bind address");
