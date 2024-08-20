@@ -2,6 +2,7 @@ use crate::{
     db::{get_addresses, get_blocks, init_db, insert_address, insert_block, Db},
     models::{Address, Block},
 };
+use actix_cors::Cors;
 use actix_files as fs;
 use actix_web::{
     web::{self},
@@ -37,6 +38,13 @@ pub async fn run_actix_server() -> std::io::Result<()> {
 
     HttpServer::new(move || {
         App::new()
+            .wrap(
+                Cors::default()
+                    .allowed_origin("http://127.0.0.1:8080") // Allow requests from this origin
+                    .allowed_methods(vec!["GET"])
+                    .allowed_headers(vec!["Content-Type", "Authorization"])
+                    .max_age(3600),
+            )
             .service(fs::Files::new("/openapi.json", "./").index_file("openapi.json"))
             .service(fs::Files::new("/", "./swagger-ui").index_file("index.html"))
             .app_data(web::Data::new(db.clone()))
