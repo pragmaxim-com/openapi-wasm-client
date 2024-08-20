@@ -18,9 +18,7 @@ curl http://127.0.0.1:8082/blocks
 curl http://127.0.0.1:8082/addresses
 ```
 
-```
-http://127.0.0.1:8082/api-docs
-```
+http://127.0.0.1:8082/swagger
 
 ### Building OpenAPI
 
