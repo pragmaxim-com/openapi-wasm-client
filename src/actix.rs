@@ -10,26 +10,38 @@ use actix_web::{
 };
 
 async fn store_address(address: web::Json<Address>, db: web::Data<Db>) -> impl Responder {
-    match insert_address(db.get_ref().clone(), address.into_inner()).await {
-        Ok(_) => HttpResponse::Ok().body("Data stored successfully"),
-        Err(_) => HttpResponse::InternalServerError().body("Failed to store data"),
+    let a = address.into_inner();
+    println!("Storing block {} at height {}", a.address, a.balance);
+    match insert_address(db.get_ref().clone(), a).await {
+        Ok(_) => {
+            println!("Address stored...");
+            HttpResponse::Created().finish()
+        }
+        Err(_) => HttpResponse::InternalServerError().finish(),
     }
 }
 
 async fn store_block(block: web::Json<Block>, db: web::Data<Db>) -> impl Responder {
-    match insert_block(db.get_ref().clone(), block.into_inner()).await {
-        Ok(_) => HttpResponse::Ok().body("Data stored successfully"),
-        Err(_) => HttpResponse::InternalServerError().body("Failed to store data"),
+    let b = block.into_inner();
+    println!("Storing block {} at height {}", b.block_id, b.height);
+    match insert_block(db.get_ref().clone(), b).await {
+        Ok(_) => {
+            println!("Block stored...");
+            HttpResponse::Created().finish()
+        }
+        Err(_) => HttpResponse::InternalServerError().finish(),
     }
 }
 
 async fn retrieve_addresses(db: web::Data<Db>) -> impl Responder {
     let addresses = get_addresses(db.get_ref().clone()).await;
+    println!("Retreiving {} addresses", addresses.len());
     HttpResponse::Ok().json(addresses)
 }
 
 async fn retrieve_blocks(db: web::Data<Db>) -> impl Responder {
     let blocks = get_blocks(db.get_ref().clone()).await;
+    println!("Retreiving {} blocks", blocks.len());
     HttpResponse::Ok().json(blocks)
 }
 
@@ -50,7 +62,7 @@ pub async fn run_actix_server() -> std::io::Result<()> {
                 "/openapi.json",
                 web::get().to(|| async { fs::NamedFile::open("./openapi.json") }),
             )
-            .service(fs::Files::new("/pkg", "./wasm-client/pkg").show_files_listing())
+            .service(fs::Files::new("/pkg", "./wasm-client/pkg"))
             .service(fs::Files::new("/swagger", "./swagger-ui").index_file("index.html"))
             .service(fs::Files::new("/wasm", "./wasm-client").index_file("index.html"))
             .route("/blocks", web::get().to(retrieve_blocks))

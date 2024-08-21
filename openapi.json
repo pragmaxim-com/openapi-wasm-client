@@ -34,6 +34,11 @@
                   "type": "array",
                   "items": {
                     "type": "object",
+                    "title": "Address",
+                    "required": [
+                      "address",
+                      "balance"
+                    ],
                     "properties": {
                       "address": {
                         "type": "string",
@@ -69,6 +74,11 @@
             "application/json": {
               "schema": {
                 "type": "object",
+                "title": "Address",
+                "required": [
+                  "address",
+                  "balance"
+                ],
                 "properties": {
                   "address": {
                     "type": "string",
@@ -87,10 +97,24 @@
         },
         "responses": {
           "201": {
-            "description": "Address stored successfully"
+            "description": "Address stored successfully",
+            "content": {}
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid address data"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -114,6 +138,11 @@
                   "type": "array",
                   "items": {
                     "type": "object",
+                    "title": "Block",
+                    "required": [
+                      "block_id",
+                      "height"
+                    ],
                     "properties": {
                       "block_id": {
                         "type": "string",
@@ -149,6 +178,11 @@
             "application/json": {
               "schema": {
                 "type": "object",
+                "title": "Block",
+                "required": [
+                  "block_id",
+                  "height"
+                ],
                 "properties": {
                   "block_id": {
                     "type": "string",
@@ -167,10 +201,24 @@
         },
         "responses": {
           "201": {
-            "description": "Block stored successfully"
+            "description": "Block stored successfully",
+            "content": {}
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid block data"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }

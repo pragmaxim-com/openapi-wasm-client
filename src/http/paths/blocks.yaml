@@ -5,7 +5,7 @@ get:
   security:
     - ApiKeyAuth: []
   responses:
-    '200':
+    "200":
       description: A list of blocks
       content:
         application/json:
@@ -13,6 +13,10 @@ get:
             type: array
             items:
               type: object
+              title: Block
+              required:
+                - block_id
+                - height
               properties:
                 block_id:
                   type: string
@@ -20,7 +24,7 @@ get:
                 height:
                   type: integer
                   example: 654321
-    '400':
+    "400":
       description: Invalid request
 post:
   summary: Store a block
@@ -34,6 +38,10 @@ post:
       application/json:
         schema:
           type: object
+          title: Block
+          required:
+            - block_id
+            - height
           properties:
             block_id:
               type: string
@@ -44,7 +52,16 @@ post:
               description: The height of the block in the blockchain
               example: 654321
   responses:
-    '201':
+    "201":
       description: Block stored successfully
-    '400':
+      content: {}
+    "400":
       description: Invalid request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Invalid block data"
