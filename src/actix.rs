@@ -50,7 +50,9 @@ pub async fn run_actix_server() -> std::io::Result<()> {
                 "/openapi.json",
                 web::get().to(|| async { fs::NamedFile::open("./openapi.json") }),
             )
+            .service(fs::Files::new("/pkg", "./wasm-client/pkg").show_files_listing())
             .service(fs::Files::new("/swagger", "./swagger-ui").index_file("index.html"))
+            .service(fs::Files::new("/wasm", "./wasm-client").index_file("index.html"))
             .route("/blocks", web::get().to(retrieve_blocks))
             .route("/addresses", web::get().to(retrieve_addresses))
             .route("/blocks", web::post().to(store_block))

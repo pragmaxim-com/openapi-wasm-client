@@ -6,7 +6,7 @@ info:
     name: MIT
     url: https://opensource.org/licenses/MIT
 servers:
-  - url: http://naked:8082
+  - url: http://localhost:8082
     description: Local server
 paths:
   /addresses:
