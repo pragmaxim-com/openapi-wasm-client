@@ -1291,6 +1291,26 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3fdb12b2476b595f9358c5161aa467c2438859caa136dec86c26fdd2efe17b92"
 
 [[package]]
+name = "openapi-wasm-client"
+version = "0.1.0"
+dependencies = [
+ "actix-cors",
+ "actix-files",
+ "actix-web",
+ "bytes",
+ "http-body-util",
+ "hyper 1.4.1",
+ "hyper-util",
+ "progenitor",
+ "reqwest 0.12.7",
+ "rocksdb",
+ "serde",
+ "serde_json",
+ "tokio",
+ "warp",
+]
+
+[[package]]
 name = "openapiv3"
 version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1702,26 +1722,6 @@ source = "git+https://github.com/rust-rocksdb/rust-rocksdb?rev=6943a2d06064780a2
 dependencies = [
  "libc",
  "librocksdb-sys",
-]
-
-[[package]]
-name = "rust-playground"
-version = "0.1.0"
-dependencies = [
- "actix-cors",
- "actix-files",
- "actix-web",
- "bytes",
- "http-body-util",
- "hyper 1.4.1",
- "hyper-util",
- "progenitor",
- "reqwest 0.12.7",
- "rocksdb",
- "serde",
- "serde_json",
- "tokio",
- "warp",
 ]
 
 [[package]]
