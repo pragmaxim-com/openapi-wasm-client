@@ -1,8 +1,8 @@
 {
-    "name": "rust-playground",
+    "name": "openapi-wasm-client",
     "version": "0.1.0",
-    "description": "OpenAPI specifications for rust-playground",
-    "repository": "git@github.com:pragmaxim-com/rust-playground.git",
+    "description": "OpenAPI specifications for openapi-wasm-client",
+    "repository": "git@github.com:pragmaxim-com/openapi-wasm-client.git",
     "author": "pragmaxim@gmail.com",
     "license": "MIT",
     "scripts": {
