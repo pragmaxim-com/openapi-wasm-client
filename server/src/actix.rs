@@ -61,6 +61,8 @@ pub async fn run_actix_server() -> std::io::Result<()> {
                 web::get().to(|| async { fs::NamedFile::open("./openapi.json") }),
             )
             .service(fs::Files::new("/swagger", "./swagger-ui").index_file("index.html"))
+            .service(fs::Files::new("/client", "./client").index_file("index.html"))
+            .service(fs::Files::new("/client/pkg", "./client/pkg"))
             .service(fs::Files::new("/progenitor", "./progenitor").index_file("index.html"))
             .service(fs::Files::new("/progenitor/pkg", "./progenitor/pkg"))
             .service(fs::Files::new("/openapi-gen", "./openapi-gen/rust").index_file("index.html"))

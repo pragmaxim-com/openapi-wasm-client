@@ -1,2 +1,2 @@
 [workspace]
-members = ["progenitor", "openapi-gen/rust", "model", "server"]
+members = ["progenitor", "openapi-gen/rust", "model", "server", "client"]

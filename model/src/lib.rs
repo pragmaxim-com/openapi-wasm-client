@@ -11,3 +11,8 @@ pub struct Block {
     pub block_id: String,
     pub height: u64,
 }
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct ErrorResponse {
+    pub error: String,
+}

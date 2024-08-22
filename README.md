@@ -15,6 +15,11 @@ npm install --global @redocly/cli@latest
 yarn bundle
 ```
 
+### Hand made client 
+
+`client` is a hand-written client with `wasm-pack` generated javascript.
+
+
 ### Generating web client with Progenitor
 
 ```
@@ -26,6 +31,8 @@ wasm-pack build --target web
 ```
 
 ### Generating web client with OpenAPI generator
+
+Advantage of OpenAPI generator is that it can generate even tests for the endpoints.
 
 ```
 cd openapi-gen
@@ -41,6 +48,13 @@ wasm-pack build --target web
 ```
 
 ### Running Actix-web http server
+
+Server handles requests from all 3 types of clients, handwritten, progenitor and openapi-gen : 
+```
+.service(fs::Files::new("/client", "./client").index_file("index.html"))
+.service(fs::Files::new("/progenitor", "./progenitor").index_file("index.html"))
+.service(fs::Files::new("/openapi-gen", "./openapi-gen/rust").index_file("index.html"))
+```
 
 ```
 cargo run
