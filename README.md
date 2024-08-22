@@ -17,8 +17,6 @@ yarn bundle
 
 ### Generating web client with Progenitor
 
-Then we generate javascript library using a `wasm-pack` :
-
 ```
 # install web-pack
 curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
@@ -28,8 +26,6 @@ wasm-pack build --target web
 ```
 
 ### Generating web client with OpenAPI generator
-
-Then we generate javascript library using a `wasm-pack` :
 
 ```
 cd openapi-gen
