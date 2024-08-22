@@ -33,7 +33,7 @@ cd openapi-gen
 java -jar openapi-generator-cli.jar generate \
     -i ../openapi.json \
     -g rust \
-    -o ./rust2 \
+    -o ./rust \
     --additional-properties=packageName=openapi-gen,library=reqwest
 
 cd rust
