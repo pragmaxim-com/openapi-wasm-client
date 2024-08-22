@@ -1,13 +1,11 @@
-use crate::{
-    db::{get_addresses, get_blocks, init_db, insert_address, insert_block, Db},
-    models::{Address, Block},
-};
+use crate::db::{get_addresses, get_blocks, init_db, insert_address, insert_block, Db};
 use actix_cors::Cors;
 use actix_files as fs;
 use actix_web::{
     web::{self},
     App, HttpResponse, HttpServer, Responder,
 };
+use model::{Address, Block};
 
 async fn store_address(address: web::Json<Address>, db: web::Data<Db>) -> impl Responder {
     let a = address.into_inner();
@@ -63,6 +61,8 @@ pub async fn run_actix_server() -> std::io::Result<()> {
                 web::get().to(|| async { fs::NamedFile::open("./openapi.json") }),
             )
             .service(fs::Files::new("/swagger", "./swagger-ui").index_file("index.html"))
+            .service(fs::Files::new("/client", "./client").index_file("index.html"))
+            .service(fs::Files::new("/client/pkg", "./client/pkg"))
             .service(fs::Files::new("/progenitor", "./progenitor").index_file("index.html"))
             .service(fs::Files::new("/progenitor/pkg", "./progenitor/pkg"))
             .service(fs::Files::new("/openapi-gen", "./openapi-gen/rust").index_file("index.html"))

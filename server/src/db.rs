@@ -3,7 +3,7 @@ use rocksdb::{
 };
 use std::sync::{Arc, RwLock};
 
-use crate::models::{Address, Block};
+use model::{Address, Block};
 
 pub type Db = Arc<RwLock<OptimisticTransactionDB<MultiThreaded>>>;
 
