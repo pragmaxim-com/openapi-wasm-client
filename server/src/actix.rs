@@ -9,7 +9,7 @@ use model::{Address, Block};
 
 async fn store_address(address: web::Json<Address>, db: web::Data<Db>) -> impl Responder {
     let a = address.into_inner();
-    println!("Storing block {} at height {}", a.address, a.balance);
+    println!("Storing address {} at height {}", a.address, a.balance);
     match insert_address(db.get_ref().clone(), a).await {
         Ok(_) => {
             println!("Address stored...");
