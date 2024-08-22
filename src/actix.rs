@@ -62,9 +62,11 @@ pub async fn run_actix_server() -> std::io::Result<()> {
                 "/openapi.json",
                 web::get().to(|| async { fs::NamedFile::open("./openapi.json") }),
             )
-            .service(fs::Files::new("/pkg", "./wasm-client/pkg"))
             .service(fs::Files::new("/swagger", "./swagger-ui").index_file("index.html"))
-            .service(fs::Files::new("/wasm", "./wasm-client").index_file("index.html"))
+            .service(fs::Files::new("/progenitor", "./progenitor").index_file("index.html"))
+            .service(fs::Files::new("/progenitor/pkg", "./progenitor/pkg"))
+            .service(fs::Files::new("/openapi-gen", "./openapi-gen/rust").index_file("index.html"))
+            .service(fs::Files::new("/openapi-gen/pkg", "./openapi-gen/rust/pkg"))
             .route("/blocks", web::get().to(retrieve_blocks))
             .route("/addresses", web::get().to(retrieve_addresses))
             .route("/blocks", web::post().to(store_block))
