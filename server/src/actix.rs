@@ -1,13 +1,11 @@
-use crate::{
-    db::{get_addresses, get_blocks, init_db, insert_address, insert_block, Db},
-    models::{Address, Block},
-};
+use crate::db::{get_addresses, get_blocks, init_db, insert_address, insert_block, Db};
 use actix_cors::Cors;
 use actix_files as fs;
 use actix_web::{
     web::{self},
     App, HttpResponse, HttpServer, Responder,
 };
+use model::{Address, Block};
 
 async fn store_address(address: web::Json<Address>, db: web::Data<Db>) -> impl Responder {
     let a = address.into_inner();
