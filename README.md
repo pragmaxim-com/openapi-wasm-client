@@ -3,6 +3,7 @@
 Actix-web rest-api with 2 generated client libraries from OpenAPI specification :
  - [progenitor](https://github.com/oxidecomputer/progenitor) 
  - [openapi-generator](https://github.com/OpenAPITools/openapi-generator)
+
 and one hand-written `client` using shared `model` with the server.
 
 ### Building OpenAPI
