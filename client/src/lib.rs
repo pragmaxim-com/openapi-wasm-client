@@ -14,7 +14,7 @@ impl ApiClient {
         }
     }
 
-    pub async fn store_block(&self, block: Block) -> Result<Block, ErrorResponse> {
+    pub async fn store_block(&self, block: Block) -> Result<(), ErrorResponse> {
         let response = Request::post(&format!("{}/blocks", self.base_url))
             .json(&block)
             .expect("Failed to serialize block")
@@ -22,16 +22,15 @@ impl ApiClient {
             .await
             .expect("Failed to send request");
 
-        if response.ok() {
-            let block: Block = response.json().await.expect("Failed to parse response");
-            Ok(block)
+        if response.status() == 201 {
+            Ok(())
         } else {
             let error: ErrorResponse = response.json().await.expect("Failed to parse error");
             Err(error)
         }
     }
 
-    pub async fn store_address(&self, address: Address) -> Result<Address, ErrorResponse> {
+    pub async fn store_address(&self, address: Address) -> Result<(), ErrorResponse> {
         let response = Request::post(&format!("{}/addresses", self.base_url))
             .json(&address)
             .expect("Failed to serialize address")
@@ -39,9 +38,8 @@ impl ApiClient {
             .await
             .expect("Failed to send request");
 
-        if response.ok() {
-            let address: Address = response.json().await.expect("Failed to parse response");
-            Ok(address)
+        if response.status() == 201 {
+            Ok(())
         } else {
             let error: ErrorResponse = response.json().await.expect("Failed to parse error");
             Err(error)
@@ -85,7 +83,7 @@ pub async fn store_block_wasm(block: JsValue) -> Result<JsValue, JsValue> {
     let client = ApiClient::new("http://localhost:8082");
 
     match client.store_block(block).await {
-        Ok(block) => Ok(serde_wasm_bindgen::to_value(&block).unwrap()),
+        Ok(_) => Ok(JsValue::undefined()), // No content to return, so return undefined
         Err(err) => Err(serde_wasm_bindgen::to_value(&err).unwrap()),
     }
 }
@@ -96,7 +94,7 @@ pub async fn store_address_wasm(address: JsValue) -> Result<JsValue, JsValue> {
     let client = ApiClient::new("http://localhost:8082");
 
     match client.store_address(address).await {
-        Ok(address) => Ok(serde_wasm_bindgen::to_value(&address).unwrap()),
+        Ok(_) => Ok(JsValue::undefined()), // No content to return, so return undefined
         Err(err) => Err(serde_wasm_bindgen::to_value(&err).unwrap()),
     }
 }

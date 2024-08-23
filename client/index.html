@@ -18,8 +18,8 @@
             // Example: Store a block
             const block = { block_id: "00000000000000000008c14f2c8fbc000d4d1efb1a1c4f7e13e7d233e4513f9b", height: 654321 };
             try {
-                const result = await store_block_wasm(block);
-                console.log("Stored block:", result);
+                await store_block_wasm(block);
+                console.log("Block stored");
             } catch (error) {
                 console.error("Error storing block:", error);
             }
@@ -27,8 +27,8 @@
             // Example: Store an address
             const address = { address: "addr1q9w7j8c9g8c9g7j8w7j8c9g8c9g7j8c9g8c9g8c9g8c9g8c9g8c9g8c9g8c9g8", balance: 100000 };
             try {
-                const addrResult = await store_address_wasm(address);
-                console.log("Stored address:", addrResult);
+                await store_address_wasm(address);
+                console.log("Address stored");
             } catch (error) {
                 console.error("Error storing address:", error);
             }
