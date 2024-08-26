@@ -1,5 +1,5 @@
 [package]
-name = "conditional-client"
+name = "reqwest-client"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,17 +7,11 @@ edition = "2021"
 serde = { version = "^1.0", features = ["derive"] }
 serde_json = "^1.0"
 model = { path = "../model" }
-
-[target.'cfg(target_arch = "wasm32")'.dependencies]
-gloo-net = "0.6"
 wasm-bindgen = "0.2.93"
 wasm-bindgen-futures = "0.4.43"
 serde-wasm-bindgen = "0.6.5"
 web-sys = { version = "0.3.70", features = ["console"] }
-
-[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 reqwest = { version = "0.12", features = ["json", "stream"] }
-tokio = { version = "1.39.2", features = ["full"] }
 
 [lib]
 crate-type = ["cdylib", "rlib"]

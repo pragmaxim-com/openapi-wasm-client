@@ -4,6 +4,5 @@ members = [
     "openapi-gen/rust",
     "model",
     "server",
-    "conditional-client",
-    "ehttp-client",
+    "reqwest-client",
 ]
