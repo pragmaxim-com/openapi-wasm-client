@@ -19,15 +19,15 @@ npm install --global @redocly/cli@latest
 yarn bundle
 ```
 
-### Hand made client 
+### Hand made conditional-client with reqwest and gloo-net 
 
-`client` is a hand-written client with [wasm-pack](https://github.com/rustwasm/wasm-pack) generated javascript.
+`conditional-client` is a hand-written client with [wasm-pack](https://github.com/rustwasm/wasm-pack) generated javascript.
 
 ```
 # install web-pack
 curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
-cd client # native target is built in root
+cd conditional-client # native target is built in root
 wasm-pack build --target web
 ```
 

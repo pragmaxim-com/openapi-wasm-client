@@ -16,3 +16,11 @@ pub struct Block {
 pub struct ErrorResponse {
     pub error: String,
 }
+
+impl ErrorResponse {
+    pub fn new(error: &str) -> Self {
+        ErrorResponse {
+            error: error.to_string(),
+        }
+    }
+}

@@ -1,2 +1,9 @@
 [workspace]
-members = ["progenitor", "openapi-gen/rust", "model", "server", "client"]
+members = [
+    "progenitor",
+    "openapi-gen/rust",
+    "model",
+    "server",
+    "conditional-client",
+    "ehttp-client",
+]
