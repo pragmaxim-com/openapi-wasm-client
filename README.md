@@ -27,7 +27,7 @@ yarn bundle
 # install web-pack
 curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
-cd client
+cd client # native target is built in root
 wasm-pack build --target web
 ```
 
