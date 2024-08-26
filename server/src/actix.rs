@@ -69,7 +69,7 @@ pub async fn run_actix_server() -> std::io::Result<()> {
                 "/conditional-client/pkg",
                 "./conditional-client/pkg",
             ))
-            .service(fs::Files::new("/ehttp_client", "./ehttp-client").index_file("index.html"))
+            .service(fs::Files::new("/ehttp-client", "./ehttp-client").index_file("index.html"))
             .service(fs::Files::new("/ehttp-client/pkg", "./ehttp-client/pkg"))
             .service(fs::Files::new("/progenitor", "./progenitor").index_file("index.html"))
             .service(fs::Files::new("/progenitor/pkg", "./progenitor/pkg"))
