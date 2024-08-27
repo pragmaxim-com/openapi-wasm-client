@@ -80,6 +80,6 @@ curl http://127.0.0.1:8082/addresses
 
 Now you can access : 
   - swagger at http://127.0.0.1:8082/swagger 
-  - hand-written client demo at http://127.0.0.1:8082/client
+  - hand-written demo at http://127.0.0.1:8082/reqwest-client
   - progenitor demo at http://127.0.0.1:8082/progenitor
   - openapi-gen demo at http://127.0.0.1:8082/openapi-gen
