@@ -59,7 +59,7 @@ wasm-pack build --target web
 
 Server handles requests from all 3 types of clients, handwritten, progenitor and openapi-gen : 
 ```
-.service(fs::Files::new("/client", "./client").index_file("index.html"))
+.service(fs::Files::new("/reqwest-client", "./reqwest-client").index_file("index.html"))
 .service(fs::Files::new("/progenitor", "./progenitor").index_file("index.html"))
 .service(fs::Files::new("/openapi-gen", "./openapi-gen/rust").index_file("index.html"))
 ```
