@@ -40,5 +40,5 @@ jobs:
 
       - name: Run WebAssembly Tests with wasm-bindgen-test
         run: |
-          cd client
+          cd reqwest-client
           wasm-pack test --headless --firefox
