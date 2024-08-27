@@ -5,6 +5,8 @@ use reqwest::Client;
 use serde_wasm_bindgen;
 #[cfg(target_arch = "wasm32")]
 use wasm_bindgen::prelude::*;
+#[cfg(target_arch = "wasm32")]
+use wasm_bindgen::JsValue;
 
 pub struct ApiClient {
     base_url: String,

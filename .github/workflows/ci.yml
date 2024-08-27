@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          components: rustfmt, clippy
+
+      - name: Install wasm-pack
+        run: cargo install wasm-pack
+
+      - name: Build and Start the Actix-Web Server
+        run: |
+          cargo build --manifest-path server/Cargo.toml
+          nohup cargo run --manifest-path server/Cargo.toml &
+
+      - name: Wait for the server to be ready
+        run: |
+          until curl -s http://localhost:8082/addresses; do
+            echo "Waiting for server..."
+            sleep 2
+          done
+
+      - name: Run WebAssembly Tests with wasm-bindgen-test
+        run: |
+          cd client
+          wasm-pack test --headless --firefox
